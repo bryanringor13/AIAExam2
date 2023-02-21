@@ -5,7 +5,7 @@
 import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
-import {render} from '@testing-library/react-native';
+import {render, waitFor} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 import {persistor, store} from '../src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -17,15 +17,22 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 describe('Render App', () => {
-  makeServer();
+  let server: any;
+  beforeEach(() => {
+    server = makeServer({environment: 'test'});
+  });
+  afterEach(() => {
+    server.shutdown();
+  });
 
   it('User render correctly', async () => {
-    render(
+    const {getByTestId} = render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <Navigation />
         </PersistGate>
       </Provider>,
     );
+    await waitFor(() => getByTestId('user-list'));
   });
 });

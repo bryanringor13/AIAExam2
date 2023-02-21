@@ -1,15 +1,14 @@
 import {Model, Server} from 'miragejs';
 
 export function makeServer({environment = 'development'} = {}) {
-  let server = new Server({
+  const server = new Server({
     environment,
+    namespace: 'api',
     models: {
       user: Model,
       article: Model,
     },
     routes() {
-      this.namespace = 'api';
-
       this.get('/articles', () => {
         return {
           articles: [

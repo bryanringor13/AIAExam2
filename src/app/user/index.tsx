@@ -37,6 +37,7 @@ const UserScreen = ({navigation}: UserScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        testID="user-list"
         data={usersList}
         renderItem={({item}) => (
           <Card
